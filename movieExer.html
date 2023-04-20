@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movies App</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    #movie-list {
+      margin-top: 20px;
+    }
+    .movie {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .movie-title {
+      font-weight: bold;
+    }
+    .remove-movie {
+      color: red;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="app-container">
+    <h1>Movies App</h1>
+    <form id="add-movie-form">
+      <div>
+        <label for="movie-title">Title:</label>
+        <input type="text" id="movie-title" name="movie-title" required minlength="2">
+      </div>
+      <div>
+        <label for="movie-rating">Rating:</label>
+        <input type="number" id="movie-rating" name="movie-rating" min="0" max="10" required>
+      </div>
+      <button type="submit">Add Movie</button>
+    </form>
+    <div id="movie-list"></div>
+  </div>
+  <script>
+    $(function() {
+      const $movieList = $('#movie-list');
+      const $addMovieForm = $('#add-movie-form');
+      const $movieTitleInput = $('#movie-title');
+      const $movieRatingInput = $('#movie-rating');
+
+      function addMovie(title, rating) {
+        const $movie = $('<div>').addClass('movie');
+        const $movieTitle = $('<span>').addClass('movie-title').text(title);
+        const $movieRating = $('<span>').text(`(${rating}/10)`);
+        const $removeMovieButton = $('<button>').addClass('remove-movie').text('Remove');
+        $movie.append($movieTitle, $movieRating, $removeMovieButton);
+        $movieList.append($movie);
+
+        $removeMovieButton.on('click', function() {
+          $movie.remove();
+        });
+      }
+
+      $addMovieForm.on('submit', function(event) {
+        event.preventDefault();
+        const title = $movieTitleInput.val();
+        const rating = $movieRatingInput.val();
+        addMovie(title, rating);
+        $addMovieForm.trigger('reset');
+      });
+    });
+  </script>
+</body>
+</html>
